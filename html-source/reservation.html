@@ -8,29 +8,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs4.min.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css">
+    <link rel="stylesheet" type="text/css" href="static/css/styles.css">
 
     <style>
-        .my-footer {
-            height: 5em;
-            background-color: #163b65;
-            margin-top: 1.5em;
-            padding : 1em;
-            color: #fff;
-            font-size: 80%;
+        p{
+            color: red;
         }
-        .room-image {
-            max-width: 50%;
-        }
-
-        .notie-container {
-            box-shadow: none;
-        }
-
-        .datepicker {
-            z-index: 10000
-        }
-
-
     </style>
 
 </head>
@@ -84,7 +67,7 @@
                     <div class="form-row">
 
                         <div class="col">
-                            <div class="form-row" id="reservation_dates">
+                            <div class="form-row" id="reservation-dates">
                                 <div class="col">
                                     <input required class="form-control"  type="text" name="start" placeholder="Arrival">
                                 </div>
@@ -139,9 +122,6 @@
     <script>
 
         let attention = Prompt();
-
-
-
 
 
         (function() {

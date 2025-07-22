@@ -7,3 +7,4 @@ This is the repository for my bookings and reservations project.
 - Uses [alex edwards SCS] (https://github.com/alexedwards/scs/v2) session management
 - Uses [nosurf] (https://github.com/justinas/nosurf)
 - Uses [govalidator] (https://github.com/asaskevich/govalidator)
+- Uses [database driver] (https://github.com/jackc/pgx/v4)

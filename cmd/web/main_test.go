@@ -4,9 +4,10 @@ import (
 	"testing"
 )
 
-func TestRunt(t *testing.T) {
-	err := run()
+func TestRun(t *testing.T) {
+	db, err := run()
 	if err != nil {
 		t.Error("failed to run app", err)
 	}
+	defer db.SQL.Close()
 }

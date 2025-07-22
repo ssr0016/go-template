@@ -7,9 +7,12 @@ import (
 
 	"github.com/ssr0016/booking/helpers"
 	"github.com/ssr0016/booking/internal/config"
+	"github.com/ssr0016/booking/internal/driver"
 	"github.com/ssr0016/booking/internal/forms"
 	"github.com/ssr0016/booking/internal/models"
 	"github.com/ssr0016/booking/internal/render"
+	"github.com/ssr0016/booking/internal/repository"
+	"github.com/ssr0016/booking/internal/repository/dbrepo"
 )
 
 // Repo the repository used by the handlers
@@ -18,12 +21,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // Create a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 

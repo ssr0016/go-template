@@ -22,5 +22,4 @@
 # sodat foreign key
 # soda generate fizz CreateFKForReservationTable
 
-
-go test ./...
+# go test ./...

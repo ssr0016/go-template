@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -221,16 +222,45 @@ type jsonResponse struct {
 	Message string `json:"message"`
 }
 
-// AvailabilityJson handles request for availabilityand send JSON response
+// AvailabilityJson handles request for availability and send JSON response
 func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) {
-	resp := jsonResponse{
-		OK:      true,
-		Message: "Available!",
+	sd := r.Form.Get("start")
+	ed := r.Form.Get("end")
+
+	layout := "2006-01-02"
+	startDate, err := time.Parse(layout, sd)
+	if err != nil {
+		helpers.ServerError(w, fmt.Errorf("invalid start date: %w", err))
+		return
 	}
 
-	out, err := json.MarshalIndent(resp, "", "     ")
+	endDate, err := time.Parse(layout, ed)
+	if err != nil {
+		helpers.ServerError(w, fmt.Errorf("invalid end date: %w", err))
+		return
+	}
+
+	roomID, err := strconv.Atoi(r.Form.Get("room_id"))
+	if err != nil {
+		helpers.ServerError(w, fmt.Errorf("invalid room_id: %w", err))
+		return
+	}
+
+	available, err := m.DB.SearchAvailabilityByDatesByRoomID(startDate, endDate, roomID)
 	if err != nil {
 		helpers.ServerError(w, err)
+		return
+	}
+
+	resp := jsonResponse{
+		OK:      available,
+		Message: "",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "    ")
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")

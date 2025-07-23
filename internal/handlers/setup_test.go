@@ -15,7 +15,6 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/justinas/nosurf"
 	"github.com/ssr0016/booking/internal/config"
-	"github.com/ssr0016/booking/internal/driver"
 	"github.com/ssr0016/booking/internal/models"
 	"github.com/ssr0016/booking/internal/render"
 )
@@ -48,12 +47,6 @@ func getRoutes() http.Handler {
 
 	app.Session = session
 
-	log.Println("Connecting to database...")
-	db, err := driver.ConnectSQL("host=localhost port=5433 user=postgres password=postgres dbname=bookings sslmode=disable")
-	if err != nil {
-		log.Fatal("Can't connect to database! Dying...")
-	}
-
 	tc, err := CreateTestTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
@@ -62,7 +55,7 @@ func getRoutes() http.Handler {
 	app.TemplateCache = tc
 	app.UseCache = true
 
-	repo := NewRepo(&app, db)
+	repo := NewTestRepo(&app)
 	NewHandlers(repo)
 
 	render.NewRenderer(&app)

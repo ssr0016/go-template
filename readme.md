@@ -8,3 +8,5 @@ This is the repository for my bookings and reservations project.
 - Uses [nosurf] (https://github.com/justinas/nosurf)
 - Uses [govalidator] (https://github.com/asaskevich/govalidator)
 - Uses [database driver] (https://github.com/jackc/pgx/v4)
+- Uses [go-simple-mail] (https://github.com/xhit/go-simple-mail)
+- Uses [Mailhog] (https://github.com/mailhog/MailHog)

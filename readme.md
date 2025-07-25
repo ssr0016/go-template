@@ -10,3 +10,4 @@ This is the repository for my bookings and reservations project.
 - Uses [database driver] (https://github.com/jackc/pgx/v4)
 - Uses [go-simple-mail] (https://github.com/xhit/go-simple-mail)
 - Uses [Mailhog] (https://github.com/mailhog/MailHog)
+- Uses [HTML emails] (https://get.foundation/emails.html)

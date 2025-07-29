@@ -505,3 +505,7 @@ func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
 	_ = m.App.Session.RenewToken(r.Context())
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
+
+func (M *Repository) AdminDashboard(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "admin-dashboard.page.gohtml", &models.TemplateData{})
+}

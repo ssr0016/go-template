@@ -12,3 +12,4 @@ This is the repository for my bookings and reservations project.
 - Uses [Mailhog] (https://github.com/mailhog/MailHog)
 - Uses [HTML emails] (https://get.foundation/emails.html)
 - Uses [RoyalUI-Free-Bootstrap-Admin-Template] (https://github.com/BootstrapDash/RoyalUI-Free-Bootstrap-Admin-Template)
+- - Uses [simple-datatables] (https://github.com/fiduswriter/Simple-DataTables)

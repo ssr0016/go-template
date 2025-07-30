@@ -494,7 +494,7 @@ func (m *postgresDBRepo) UpdateReservation(u models.Reservation) error {
 	defer cancel()
 
 	query := `
-		update reservation set
+		update reservation set 
 			first_name = $1,
 			last_name = $2,
 			email = $3,
@@ -509,6 +509,7 @@ func (m *postgresDBRepo) UpdateReservation(u models.Reservation) error {
 		u.Email,
 		u.Phone,
 		time.Now(),
+		u.ID,
 	)
 	if err != nil {
 		return err

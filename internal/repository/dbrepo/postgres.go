@@ -494,15 +494,15 @@ func (m *postgresDBRepo) UpdateReservation(u models.Reservation) error {
 	defer cancel()
 
 	query := `
-		update 
+		UPDATE 
 			reservation
-		set 
+		SET 
 			first_name = $1,
 			last_name = $2,
 			email = $3,
 			phone = $4,
 			updated_at = $5
-		where id = $6
+		WHERE id = $6
 	`
 
 	_, err := m.DB.ExecContext(ctx, query,
@@ -526,10 +526,10 @@ func (m *postgresDBRepo) DeleteReservation(id int) error {
 	defer cancel()
 
 	query := `
-		delete 
-		from 
+		DELETE 
+		FROM
 			reservation 
-		where id = $1
+		WHERE id = $1
 	`
 
 	_, err := m.DB.ExecContext(ctx, query, id)
@@ -546,11 +546,11 @@ func (m *postgresDBRepo) UpdateProcessedForReservation(id, processed int) error 
 	defer cancel()
 
 	query := `
-		update 
+		UPDATE 
 			reservation
-		set
+		SET
 			 processed = $1 
-		where id = $2
+		WHERE id = $2
 	`
 
 	_, err := m.DB.ExecContext(ctx, query, processed, id)
@@ -568,14 +568,14 @@ func (m *postgresDBRepo) AllRooms() ([]models.Room, error) {
 	var rooms []models.Room
 
 	query := `
-		select
+		SELECT
 		 	id,
 			room_name,
 			created_at,
 			updated_at
-		from
+		FROM
 			rooms
-		order by
+		ORDER BY
 		 	room_name
 	`
 
@@ -604,4 +604,55 @@ func (m *postgresDBRepo) AllRooms() ([]models.Room, error) {
 	}
 
 	return rooms, nil
+}
+
+// GetRestrictionsForRoomByDate returns restrictions for a room by date range
+func (m *postgresDBRepo) GetRestrictionsForRoomByDate(roomID int, start, end time.Time) ([]models.RoomRestriction, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var restrictions []models.RoomRestriction
+
+	query := `
+		SELECT
+			id,
+			COALESCE(reservation_id, 0),
+			restriction_id,
+			room_id,
+			start_date,
+			end_date
+		FROM
+			room_restrictions
+		WHERE
+			$1 < end_date AND $2 >= start_date
+		AND
+			room_id = $3
+	`
+
+	rows, err := m.DB.QueryContext(ctx, query, start, end, roomID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var r models.RoomRestriction
+		if err := rows.Scan(
+			&r.ID,
+			&r.ReservationID,
+			&r.RestrictionID,
+			&r.RoomID,
+			&r.StartDate,
+			&r.EndDate,
+		); err != nil {
+			return nil, err
+		}
+		restrictions = append(restrictions, r)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return restrictions, nil
 }

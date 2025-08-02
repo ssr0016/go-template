@@ -60,7 +60,11 @@
                     <hr>
                     <div class="float-start">
                         <input type="submit" class="btn btn-primary" value="Save">
-                        <a href="/admin/reservations-{{$src}}" class="btn btn-warning">Cancel</a>
+                        {{if eq $src "cal"}}
+                            <a href="#!" onclick="window.history.go(-1)" class="btn btn-warning">Cancel</a>
+                        {{else}}
+                            <a href="/admin/reservations-{{$src}}" class="btn btn-warning">Cancel</a>
+                        {{end}}
                         <a href="#!" class="btn btn-info" onClick="processRes({{$res.ID}})">Mark as Processed</a>
                     </div>
 
@@ -68,7 +72,7 @@
                         <a href="#!" class="btn btn-danger" onClick="deleteRes({{$res.ID}})">Delete</a>
                     </div>
                     <div class="clearfix"></div>
-                </form>
+        </form>
 
     </div>
 {{end}}

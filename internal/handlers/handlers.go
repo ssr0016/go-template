@@ -134,6 +134,12 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	room, err := m.DB.GetRoomByID(roomID)
+	if err != nil {
+		m.App.Session.Put(r.Context(), "error", "invalid data!")
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	reservation := models.Reservation{
 		FirstName: r.Form.Get("first_name"),
 		LastName:  r.Form.Get("last_name"),
@@ -142,6 +148,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		StartDate: startDate,
 		EndDate:   endDate,
 		RoomID:    roomID,
+		Room:      room,
 	}
 
 	form := forms.New(r.PostForm)
@@ -153,9 +160,15 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	if !form.Valid() {
 		data := make(map[string]interface{})
 		data["reservation"] = reservation
+
+		stringMap := make(map[string]string)
+		stringMap["start_date"] = sd
+		stringMap["end_date"] = ed
+
 		render.Template(w, r, "make-reservation.page.gohtml", &models.TemplateData{
-			Form: form,
-			Data: data,
+			Form:      form,
+			Data:      data,
+			StringMap: stringMap,
 		})
 		return
 	}

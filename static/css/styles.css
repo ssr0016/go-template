@@ -17,3 +17,11 @@
 .datepicker {
   z-index: 10000;
 }
+
+.about-img {
+  max-width: 300px;
+  border-radius: 8px;
+  float: right;
+  margin-left: 15px; /* space between image and text */
+  margin-bottom: 10px; /* optional spacing below */
+}

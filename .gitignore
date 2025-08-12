@@ -1,4 +1,4 @@
-.idea
-bookings
+.idea/
+bookings/
 database.yml
 run.sh
